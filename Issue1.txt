@@ -1,0 +1,128 @@
+问题现象：
+收集log时提示/tmp目录已满，没有空间可写
+
+问题排查：
+一、
+步骤：查看/tmp目录下各个文件/目录大小，du -h /tmp
+现象：
+user@machine:/tmp# du -h /tmp
+1.2M    /tmp/tcp_dump
+16.0K   /tmp/postresults
+0       /tmp/.Test-unix
+0       /tmp/.font-unix
+0       /tmp/.XIM-unix
+0       /tmp/.ICE-unix
+0       /tmp/.X11-unix
+159.1M  /tmp
+结论：只占用大约160M左右，并不是很大
+
+二、
+步骤：查看/tmp挂载点的总空间大小,df -h
+现象：
+user@machine:/tmp# df -h
+Filesystem                Size      Used Available Use% Mounted on
+none                      7.3G         0      7.3G   0% /dev
+none                      7.3G    262.8M      7.1G   4% /dev/shm
+none                      7.3G    193.9M      7.1G   3% /
+none                      7.3G     36.0K      7.3G   0% /etc/versions
+none                      7.3G         0      7.3G   0% /dev
+none                      7.3G    262.8M      7.1G   4% /dev/shm
+tmpfs                     7.3G    336.0K      7.3G   0% /run
+tmpfs                     7.3G         0      7.3G   0% /sys/fs/cgroup
+tmpfs                     7.3G      7.3G         0 100% /tmp
+/dev/mtdblock13          62.0M      9.4M     49.4M  16% /var/volatile_pns
+/dev/mtdblock12          61.5M      9.4M     49.0M  16% /var/volatile
+tmpfs                     7.3G     56.2M      7.3G   1% /squash
+tmpfs                     7.3G      8.0K      7.3G   0% /var/lib/nfs
+tmpfs                     7.3G      4.0K      7.3G   0% /var/lib/dhcp
+tmpfs                     7.3G         0      7.3G   0% /var/pmc_mw
+tmpfs                     7.3G    221.0M      7.1G   3% /pmc_mw
+tmpfs                     7.3G    120.0K      7.3G   0% /opt/lxc
+tmpfs                     7.3G    109.3M      7.2G   1% /usr/var/lib/lxc
+tmpfs                     7.3G    180.0K      7.3G   0% /var/lib/tftpboot
+/dev/loop0               32.6M     32.6M         0 100% /pns/lfs
+/dev/mtdblock12          61.5M      9.4M     49.0M  16% /etc/machine-id
+tmpfs                     7.3G    368.0K      7.3G   0% /mwFm
+结论：显示/tmp挂载点Size大小为7.3G，Used为7.3G，100%，空间都已经被用完
+tmpfs                     7.3G      7.3G         0 100% /tmp
+
+
+三、
+步骤：查看内存使用情况，cat /proc/meminfo
+现象：
+user@machine:/tmp# cat /proc/meminfo  
+MemTotal:       15329736 kB
+MemFree:         3638912 kB
+Buffers:          119528 kB
+Cached:         10328468 kB
+SwapCached:            0 kB
+Active:           447332 kB
+Inactive:        9718268 kB
+Active(anon):     321212 kB
+Inactive(anon):  9461088 kB
+Active(file):     126120 kB
+Inactive(file):   257180 kB
+Unevictable:      881548 kB
+Mlocked:          881548 kB
+HighTotal:      14893056 kB
+HighFree:        3595076 kB
+LowTotal:         436680 kB
+LowFree:           43836 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 8 kB
+Writeback:             0 kB
+AnonPages:        599508 kB
+Mapped:          1996900 kB
+Shmem:          10056324 kB
+Slab:             154412 kB
+SReclaimable:     124372 kB
+SUnreclaim:        30040 kB
+KernelStack:        5688 kB
+PageTables:        57792 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:    13483416 kB
+Committed_AS:   12276428 kB
+VmallocTotal:     319488 kB
+VmallocUsed:      204684 kB
+VmallocChunk:      59836 kB
+HugePages_Total:     170
+HugePages_Free:       61
+HugePages_Rsvd:        1
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+结论：MemFree显示内存还有3638912 kB（3.47G）,并没有用完，和（二）似乎有矛盾，怎么回事？
+
+四、
+步骤：查询mount参数，man mount
+现象：
+Mount options for tmpfs
+       size=nbytes
+              Override  default maximum size of the filesystem.  The size is given in bytes, and rounded up to entire
+              pages.  The default is half of the memory. The size parameter also accepts a suffix  %  to  limit  this
+              tmpfs instance to that percentage of your physical RAM: the default, when neither size nor nr_blocks is
+              specified, is size=50%
+结论：在mount tmpfs的时候，默认只有内存总量的50%，也就是只有7.3G*50%=3.65G的空间才可以利用，（二）中的Use100%指的是这3.65G被用完了
+
+五、
+步骤：查询当前系统打开的文件(lsof=ls opened file)，并过滤/tmp目录，lsof | grep tmp
+现象：
+user@machine:/tmp# lsof | grep tmp
+3495    /usr/sbin/tcpdump       /tmp/111.pcap (deleted)
+3497    /usr/sbin/tcpdump       /tmp/222.pcap (deleted)
+3499    /usr/sbin/tcpdump       /tmp/333.pcap (deleted)
+3609    /usr/sbin/tcpdump       /tmp/444.pcap (deleted)
+结论：说明在tmp目录下有几个tcpdump抓包文件，已被删除，但是进程仍在运行，没有kill掉，内存中仍存在着抓包数据
+
+六、
+步骤：kill掉所有的tcpdump进程，并重新查看meminfo
+现象：
+user@machine:/tmp# cat /proc/meminfo  
+MemTotal:       15329736 kB
+MemFree:        11158660 kB
+结论：内存重新被释放
+
+
+
