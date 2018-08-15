@@ -1,10 +1,10 @@
-ÎÊÌâÏÖÏó£º
-ÊÕ¼¯logÊ±ÌáÊ¾/tmpÄ¿Â¼ÒÑÂú£¬Ã»ÓĞ¿Õ¼ä¿ÉĞ´
+ï»¿é—®é¢˜ç°è±¡ï¼š
+æ”¶é›†logæ—¶æç¤º/tmpç›®å½•å·²æ»¡ï¼Œæ²¡æœ‰ç©ºé—´å¯å†™
 
-ÎÊÌâÅÅ²é£º
-Ò»¡¢
-²½Öè£º²é¿´/tmpÄ¿Â¼ÏÂ¸÷¸öÎÄ¼ş/Ä¿Â¼´óĞ¡£¬du -h /tmp
-ÏÖÏó£º
+é—®é¢˜æ’æŸ¥ï¼š
+ä¸€ã€
+æ­¥éª¤ï¼šæŸ¥çœ‹/tmpç›®å½•ä¸‹å„ä¸ªæ–‡ä»¶/ç›®å½•å¤§å°ï¼Œdu -h /tmp
+ç°è±¡ï¼š
 user@machine:/tmp# du -h /tmp
 1.2M    /tmp/tcp_dump
 16.0K   /tmp/postresults
@@ -14,11 +14,11 @@ user@machine:/tmp# du -h /tmp
 0       /tmp/.ICE-unix
 0       /tmp/.X11-unix
 159.1M  /tmp
-½áÂÛ£ºÖ»Õ¼ÓÃ´óÔ¼160M×óÓÒ£¬²¢²»ÊÇºÜ´ó
+ç»“è®ºï¼šåªå ç”¨å¤§çº¦160Må·¦å³ï¼Œå¹¶ä¸æ˜¯å¾ˆå¤§
 
-¶ş¡¢
-²½Öè£º²é¿´/tmp¹ÒÔØµãµÄ×Ü¿Õ¼ä´óĞ¡,df -h
-ÏÖÏó£º
+äºŒã€
+æ­¥éª¤ï¼šæŸ¥çœ‹/tmpæŒ‚è½½ç‚¹çš„æ€»ç©ºé—´å¤§å°,df -h
+ç°è±¡ï¼š
 user@machine:/tmp# df -h
 Filesystem                Size      Used Available Use% Mounted on
 none                      7.3G         0      7.3G   0% /dev
@@ -43,13 +43,13 @@ tmpfs                     7.3G    180.0K      7.3G   0% /var/lib/tftpboot
 /dev/loop0               32.6M     32.6M         0 100% /pns/lfs
 /dev/mtdblock12          61.5M      9.4M     49.0M  16% /etc/machine-id
 tmpfs                     7.3G    368.0K      7.3G   0% /mwFm
-½áÂÛ£ºÏÔÊ¾/tmp¹ÒÔØµãSize´óĞ¡Îª7.3G£¬UsedÎª7.3G£¬100%£¬¿Õ¼ä¶¼ÒÑ¾­±»ÓÃÍê
+ç»“è®ºï¼šæ˜¾ç¤º/tmpæŒ‚è½½ç‚¹Sizeå¤§å°ä¸º7.3Gï¼ŒUsedä¸º7.3Gï¼Œ100%ï¼Œç©ºé—´éƒ½å·²ç»è¢«ç”¨å®Œ
 tmpfs                     7.3G      7.3G         0 100% /tmp
 
 
-Èı¡¢
-²½Öè£º²é¿´ÄÚ´æÊ¹ÓÃÇé¿ö£¬cat /proc/meminfo
-ÏÖÏó£º
+ä¸‰ã€
+æ­¥éª¤ï¼šæŸ¥çœ‹å†…å­˜ä½¿ç”¨æƒ…å†µï¼Œcat /proc/meminfo
+ç°è±¡ï¼š
 user@machine:/tmp# cat /proc/meminfo  
 MemTotal:       15329736 kB
 MemFree:         3638912 kB
@@ -93,36 +93,36 @@ HugePages_Free:       61
 HugePages_Rsvd:        1
 HugePages_Surp:        0
 Hugepagesize:       2048 kB
-½áÂÛ£ºMemFreeÏÔÊ¾ÄÚ´æ»¹ÓĞ3638912 kB£¨3.47G£©,²¢Ã»ÓĞÓÃÍê£¬ºÍ£¨¶ş£©ËÆºõÓĞÃ¬¶Ü£¬ÔõÃ´»ØÊÂ£¿
+ç»“è®ºï¼šMemFreeæ˜¾ç¤ºå†…å­˜è¿˜æœ‰3638912 kBï¼ˆ3.47Gï¼‰,å¹¶æ²¡æœ‰ç”¨å®Œï¼Œå’Œï¼ˆäºŒï¼‰ä¼¼ä¹æœ‰çŸ›ç›¾ï¼Œæ€ä¹ˆå›äº‹ï¼Ÿ
 
-ËÄ¡¢
-²½Öè£º²éÑ¯mount²ÎÊı£¬man mount
-ÏÖÏó£º
+å››ã€
+æ­¥éª¤ï¼šæŸ¥è¯¢mountå‚æ•°ï¼Œman mount
+ç°è±¡ï¼š
 Mount options for tmpfs
        size=nbytes
               Override  default maximum size of the filesystem.  The size is given in bytes, and rounded up to entire
               pages.  The default is half of the memory. The size parameter also accepts a suffix  %  to  limit  this
               tmpfs instance to that percentage of your physical RAM: the default, when neither size nor nr_blocks is
               specified, is size=50%
-½áÂÛ£ºÔÚmount tmpfsµÄÊ±ºò£¬Ä¬ÈÏÖ»ÓĞÄÚ´æ×ÜÁ¿µÄ50%£¬Ò²¾ÍÊÇÖ»ÓĞ7.3G*50%=3.65GµÄ¿Õ¼ä²Å¿ÉÒÔÀûÓÃ£¬£¨¶ş£©ÖĞµÄUse100%Ö¸µÄÊÇÕâ3.65G±»ÓÃÍêÁË
+ç»“è®ºï¼šåœ¨mount tmpfsçš„æ—¶å€™ï¼Œé»˜è®¤åªæœ‰å†…å­˜æ€»é‡çš„50%ï¼Œä¹Ÿå°±æ˜¯åªæœ‰7.3G*50%=3.65Gçš„ç©ºé—´æ‰å¯ä»¥åˆ©ç”¨ï¼Œï¼ˆäºŒï¼‰ä¸­çš„Use100%æŒ‡çš„æ˜¯è¿™3.65Gè¢«ç”¨å®Œäº†
 
-Îå¡¢
-²½Öè£º²éÑ¯µ±Ç°ÏµÍ³´ò¿ªµÄÎÄ¼ş(lsof=ls opened file)£¬²¢¹ıÂË/tmpÄ¿Â¼£¬lsof | grep tmp
-ÏÖÏó£º
+äº”ã€
+æ­¥éª¤ï¼šæŸ¥è¯¢å½“å‰ç³»ç»Ÿæ‰“å¼€çš„æ–‡ä»¶(lsof=ls opened file)ï¼Œå¹¶è¿‡æ»¤/tmpç›®å½•ï¼Œlsof | grep tmp
+ç°è±¡ï¼š
 user@machine:/tmp# lsof | grep tmp
 3495    /usr/sbin/tcpdump       /tmp/111.pcap (deleted)
 3497    /usr/sbin/tcpdump       /tmp/222.pcap (deleted)
 3499    /usr/sbin/tcpdump       /tmp/333.pcap (deleted)
 3609    /usr/sbin/tcpdump       /tmp/444.pcap (deleted)
-½áÂÛ£ºËµÃ÷ÔÚtmpÄ¿Â¼ÏÂÓĞ¼¸¸ötcpdump×¥°üÎÄ¼ş£¬ÒÑ±»É¾³ı£¬µ«ÊÇ½ø³ÌÈÔÔÚÔËĞĞ£¬Ã»ÓĞkillµô£¬ÄÚ´æÖĞÈÔ´æÔÚ×Å×¥°üÊı¾İ
+ç»“è®ºï¼šè¯´æ˜åœ¨tmpç›®å½•ä¸‹æœ‰å‡ ä¸ªtcpdumpæŠ“åŒ…æ–‡ä»¶ï¼Œå·²è¢«åˆ é™¤ï¼Œä½†æ˜¯è¿›ç¨‹ä»åœ¨è¿è¡Œï¼Œæ²¡æœ‰killæ‰ï¼Œå†…å­˜ä¸­ä»å­˜åœ¨ç€æŠ“åŒ…æ•°æ®
 
-Áù¡¢
-²½Öè£ºkillµôËùÓĞµÄtcpdump½ø³Ì£¬²¢ÖØĞÂ²é¿´meminfo
-ÏÖÏó£º
+å…­ã€
+æ­¥éª¤ï¼škillæ‰æ‰€æœ‰çš„tcpdumpè¿›ç¨‹ï¼Œå¹¶é‡æ–°æŸ¥çœ‹meminfo
+ç°è±¡ï¼š
 user@machine:/tmp# cat /proc/meminfo  
 MemTotal:       15329736 kB
 MemFree:        11158660 kB
-½áÂÛ£ºÄÚ´æÖØĞÂ±»ÊÍ·Å
+ç»“è®ºï¼šå†…å­˜é‡æ–°è¢«é‡Šæ”¾
 
 
 
